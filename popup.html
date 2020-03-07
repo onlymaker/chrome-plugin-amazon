@@ -1,15 +1,12 @@
 ﻿<html>
 <head>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/master/qrcode.min.js"></script>
-    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/v2/dist/FileSaver.min.js"></script>
     <script src="popup.js"></script>
     <style>
         body {
-            margin: 0;
+            margin: 1px;
         }
         #menu {
-            margin: 1px 0;
             display: flex;
             flex-flow: column;
         }
@@ -24,43 +21,16 @@
             justify-content: flex-start;
             align-items: center;
         }
-        #menu div.name {
-            cursor: auto;
-            background: none;
-            color: darkgray;
-        }
         i {
             width: 25px;
             font-size: 0.8rem;
-        }
-        div#qrcode-img {
-            margin: 10px;
-        }
-        div#qrcode-close {
-            justify-content: flex-end;
-        }
-        #qrcode-close i {
-            color: red;
-            width: auto;
         }
     </style>
 </head>
 <body>
 <div id="menu">
-    <div id="qrcode">
-        <i class="fa fa-qrcode"></i><span>二维码</span>
-    </div>
-    <div id="bookmark">
-        <i class="fa fa-bookmark"></i><span>备份书签</span>
-    </div>
-    <div id="shopify" class="name">
-        <i></i><span>Shopify</span>
-    </div>
-    <div id="shopify-order-list">
-        <i></i><i class="fa fa-shopping-cart"></i><span>Order List</span>
-    </div>
-    <div id="shopify-flash-metrics">
-        <i></i><i class="fa fa-table"></i><span>Flash Metrics</span>
+    <div id="amazon-rating">
+        <i class="fa fa-amazon"></i><span>Amazon Rating</span>
     </div>
 </div>
 </body>

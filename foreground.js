@@ -1,41 +1,25 @@
-﻿chrome.runtime.sendMessage({command: 'register'}, console.log);
-
-chrome.runtime.onMessage.addListener(
-    function(data, sender, sendResponse) {
+﻿chrome.runtime.onMessage.addListener(
+    function (data, sender, sendResponse) {
         console.log(data, 'from', sender);
         switch (data.command) {
-            case 'shopify-order-list':
-                let orders = '';
-                document.querySelectorAll('li._1D_TZ').forEach(function (o, i) {
-                    console.log(i, o.innerText);
-                    orders += o.innerText.split('\n');
-                    orders += '\n';
-                });
-                sendResponse({data: orders});
-                break;
-            case 'shopify-flash-metrics':
-                let metrics = {};
-                let frame = window.frames["galaxy"].document;
-                let names = frame.querySelectorAll(".ID-item");
-                let values = frame.querySelectorAll(".ID-metric-data-1");
-                for (let i = 0; i < names.length; i++) {
-                    let name = names[i].innerText.split("/").pop().split("?").shift();
-                    let metric = Number(values[i].innerText.split("(").shift());
-                    if (metrics[name]) {
-                        metrics[name] += metric;
-                    } else {
-                        metrics[name] = metric;
+            case 'amazon-rating':
+                let i = 0;
+                let candidate = data.text.split(',');
+                let search = location.search.substr(1);
+                if (search.startsWith('asin')) {
+                    search = search.substr(5);
+                    for (i = 0; i < candidate.length; i++) {
+                        if (search === candidate[i]) {
+                            break;
+                        }
                     }
+                    if (i < candidate.length) i++;
                 }
-                console.log(metrics);
-                let text = 'name,metrics\n';
-                for (let name in metrics) {
-                    text += name;
-                    text += ',';
-                    text += metrics[name];
-                    text += '\n';
+                if (i === candidate.length) {
+                    alert('ASIN to the end');
+                } else {
+                    location.href = 'https://www.amazon.com/gp/customer-reviews/widgets/average-customer-review/popover?asin=' + candidate[i];
                 }
-                sendResponse({data: text});
                 break;
             default:
                 sendResponse({data: 'unsupported command: ' + data.command});
@@ -43,15 +27,30 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-window.onload = function() {
-    setTimeout(
-        function () {
-            let toolbar = document.querySelector("ng-include[src='vm.toolbar'] > div");
-            if (toolbar) {
-                let html = '<button class="btn btn-sm btn-success" onclick="window.open(\'https://baidu.com\')">baidu</buttion>';
-                toolbar.insertAdjacentHTML('beforeEnd', html);
-            }
-        },
-        3000
-    );
+window.onload = function () {
+    if (/\.amazon\./.test(location.host) && /^\?asin=/.test(location.search)) {
+        let reg = /(?<number>\d+\.?\d*)/;
+        let count = document.querySelector(".totalRatingCount").innerText;
+        let stars = document.querySelectorAll("td");
+        let data = {
+            count: reg.exec(count).groups.number,
+            star5: reg.exec(stars[2].innerText).groups.number,
+            star4: reg.exec(stars[5].innerText).groups.number,
+            star3: reg.exec(stars[8].innerText).groups.number,
+            star2: reg.exec(stars[11].innerText).groups.number,
+            star1: reg.exec(stars[14].innerText).groups.number,
+        };
+        fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: Object.keys(data)
+                .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
+                .join('&'),
+        })
+            .finally(function () {
+                alert(JSON.stringify(data));
+            })
+    }
 };

@@ -1,5 +1,5 @@
 ﻿{
-  "name": "One",
+  "name": "Amazon rating",
   "version": "1.0.0",
   "manifest_version": 2,
   "icons": {
@@ -8,7 +8,7 @@
     "128": "logo_128.png"
   },
   "permissions": [
-    "bookmarks","notifications","tabs","http://*/*","https://*/*"
+    "notifications","tabs","http://*/*","https://*/*"
   ],
   "browser_action": {
     "default_popup": "popup.html"
@@ -25,6 +25,5 @@
         "foreground.js"
       ]
     }
-  ],
-  "content_security_policy":"script-src 'self' https://cdn.rawgit.com; object-src 'self'"
-}  
+  ]
+}
