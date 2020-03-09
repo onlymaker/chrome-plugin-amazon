@@ -33,6 +33,7 @@ window.onload = function () {
         let count = document.querySelector(".totalRatingCount").innerText;
         let stars = document.querySelectorAll("td");
         let data = {
+            asin: location.search.substr(6),
             count: reg.exec(count).groups.number,
             star5: reg.exec(stars[2].innerText).groups.number,
             star4: reg.exec(stars[5].innerText).groups.number,
