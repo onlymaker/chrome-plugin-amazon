@@ -4,7 +4,8 @@
         switch (data.command) {
             case 'amazon-rating':
                 let i = 0;
-                let candidate = data.text.split(',');
+                let market = data.market;
+                let candidate = data.asinList.split(',');
                 let search = location.search.substr(1);
                 if (search.startsWith('asin')) {
                     search = search.substr(5);
@@ -18,7 +19,17 @@
                 if (i === candidate.length) {
                     alert('ASIN to the end');
                 } else {
-                    location.href = 'https://www.amazon.com/gp/customer-reviews/widgets/average-customer-review/popover?asin=' + candidate[i];
+                    switch (market.substr(-2)) {
+                        case 'DE':
+                            location.href = 'https://www.amazon.de/gp/customer-reviews/widgets/average-customer-review/popover?asin=' + candidate[i];
+                            break;
+                        case 'UK':
+                            location.href = 'https://www.amazon.co.uk/gp/customer-reviews/widgets/average-customer-review/popover?asin=' + candidate[i];
+                            break;
+                        case 'US':
+                            location.href = 'https://www.amazon.com/gp/customer-reviews/widgets/average-customer-review/popover?asin=' + candidate[i];
+                            break;
+                    }
                 }
                 break;
             default:
