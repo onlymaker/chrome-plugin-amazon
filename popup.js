@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
             if (time < expireTime) {
                 sendAmazonRatingCommand(market, localStorage.getItem('asinList'));
             } else {
-                fetch('?market=' + market)
+                fetch('/amazon/Asin?market=' + market)
                     .then(function (response) {
                         return response.text();
                     })

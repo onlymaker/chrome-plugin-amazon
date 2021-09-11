@@ -52,7 +52,7 @@ window.onload = function () {
             star2: reg.exec(stars[11].innerText).groups.number,
             star1: reg.exec(stars[14].innerText).groups.number,
         };
-        fetch('', {
+        fetch('/amazon/Asin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
